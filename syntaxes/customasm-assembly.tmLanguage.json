@@ -3,18 +3,55 @@
 	"name": "customasm-assembly",
 	"patterns": [
 		{
-			"include": "#keywords"
+			"include": "#directives"
+		},
+		{
+			"include": "#labels"
+		},
+		{
+			"include": "#constants"
+		},
+		{
+			"include": "#operators"
+		},
+		{
+			"include": "#types"
+		},
+		{
+			"include": "#blockComments"
+		},
+		{
+			"include": "#comments"
 		},
 		{
 			"include": "#strings"
+		},
+		{
+			"include": "#current"
+		},
+		{
+			"include": "#mnemonics"
+		},
+		{
+			"include": "#functions"
 		}
 	],
 	"repository": {
-		"keywords": {
+		"blockComments": {
+			"name": "comment.block.customasm-assembly",
+			"begin": ";\\*",
+			"end": "\\*;",
 			"patterns": [
 				{
-					"name": "keyword.control.customasm-assembly",
-					"match": "\\b(if|while|for|return)\\b"
+					"include": "#blockComment"
+				}
+			]
+		},
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.line.customasm-assembly",
+					"match": ";.*$"
 				}
 			]
 		},
@@ -26,6 +63,86 @@
 				{
 					"name": "constant.character.escape.customasm-assembly",
 					"match": "\\\\."
+				}
+			]
+		},
+		"labels": {
+			"patterns": [
+				{
+					"name": "support.function.customasm-assembly",
+					"match": "\\.*[a-zA-Z0-9_]+:\\s*$"
+				},
+				{
+					"name": "support.function.customasm-assembly",
+					"match": "[a-zA-Z0-9_]+(\\.+[a-zA-Z0-9_]+)+|\\.+[a-zA-Z0-9_]+"
+				}
+			]
+		},
+		"directives": {
+			"patterns": [
+				{
+					"name": "keyword.control.customasm-assembly",
+					"match": "#const\\(noemit\\)"
+				},
+				{
+					"name": "keyword.control.customasm-assembly",
+					"match": "#(ruledef|subruledef|const|include|bits|addr|addr_end|outp|bits|fill|bankdef|bank|align|res|once|assert|fn|if|elif|else|d\\d*)\\b"
+				}
+			]
+		},
+		"operators": {
+			"patterns": [
+				{
+					"name": "entity.name.class.customasm-assembly",
+					"match": "=>"
+				}
+			]
+		},
+		"types": {
+			"patterns": [
+				{
+					"name": "storage.type.customasm-assembly",
+					"match": "(u|s|i)\\d+"
+				}
+			]
+		},
+		"constants": {
+			"patterns": [
+				{
+					"name": "constant.numeric.customasm-assembly",
+					"match": "0b[0-1]+|%(0|1)+|0o[0-7]+|0x[0-9a-fA-F]+|\\b\\d+\\b"
+				}
+			]
+		},
+		"mnemonics": {
+			"patterns": [
+				{
+					"name": "entity.name.tag.customasm-assembly",
+					"match": "^\\s*[a-zA-Z0-9_]*\\s+(?!=(?!>))"
+				}
+			]
+		},
+		"current": {
+			"patterns": [
+				{
+					"name": "entity.name.class.customasm-assembly",
+					"match": "\\$|pc"
+				}
+			]
+		},
+		"functions": {
+			"patterns": [
+				{
+					"match": "(asm)\\w*\\{.*?\\}",
+					"captures": {
+						"1": { "name": "support.function.customasm-assembly" }
+					}
+				},
+				{
+					"match": "\\b(bankof|assert|sizeof|bankof|le|utf8|ascii|utf16be|utf16le|utf32be|utf32le|incbin|incbinstr|inchexstr)\\(.*\\)",
+					"captures": {
+						"1": { "name": "support.function.customasm-assembly" }
+					}
 				}
 			]
 		}
