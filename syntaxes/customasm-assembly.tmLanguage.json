@@ -2,50 +2,24 @@
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
 	"name": "customasm-assembly",
 	"patterns": [
-		{
-			"include": "#directives"
-		},
-		{
-			"include": "#labels"
-		},
-		{
-			"include": "#constants"
-		},
-		{
-			"include": "#operators"
-		},
-		{
-			"include": "#types"
-		},
-		{
-			"include": "#blockComments"
-		},
-		{
-			"include": "#comments"
-		},
-		{
-			"include": "#strings"
-		},
-		{
-			"include": "#current"
-		},
-		{
-			"include": "#mnemonics"
-		},
-		{
-			"include": "#functions"
-		}
+		{ "include": "#directives" },
+		{ "include": "#labels" },
+		{ "include": "#constants" },
+		{ "include": "#operators" },
+		{ "include": "#types" },
+		{ "include": "#blockComments" },
+		{ "include": "#comments" },
+		{ "include": "#strings" },
+		{ "include": "#current" },
+		{ "include": "#mnemonics" },
+		{ "include": "#functions" }
 	],
 	"repository": {
 		"blockComments": {
 			"name": "comment.block.customasm-assembly",
 			"begin": ";\\*",
 			"end": "\\*;",
-			"patterns": [
-				{
-					"include": "#blockComment"
-				}
-			]
+			"patterns": [ { "include": "#blockComments" } ]
 		},
 		"comments": {
 			"patterns": [
@@ -134,15 +108,11 @@
 			"patterns": [
 				{
 					"match": "(asm)\\w*\\{.*?\\}",
-					"captures": {
-						"1": { "name": "support.function.customasm-assembly" }
-					}
+					"captures": { "1": { "name": "support.function.customasm-assembly" } }
 				},
 				{
 					"match": "\\b(bankof|assert|sizeof|bankof|le|utf8|ascii|utf16be|utf16le|utf32be|utf32le|incbin|incbinstr|inchexstr)\\(.*\\)",
-					"captures": {
-						"1": { "name": "support.function.customasm-assembly" }
-					}
+					"captures": { "1": { "name": "support.function.customasm-assembly" } }
 				}
 			]
 		}
