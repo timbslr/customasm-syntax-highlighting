@@ -1,5 +1,9 @@
 import * as vscode from "vscode";
 import { semanticTokensProvider, semanticTokensLegend } from "./semanticTokensProvider.js";
+import { extractRulesAndSubrules } from "./ruleExtractor.js";
+
+// This method is called when your extension is activated
+// Your extension is activated the very first time the command is executed
 /**
  * @param {vscode.ExtensionContext} context
  */
@@ -16,6 +20,7 @@ export function activate(context) {
 		vscode.window.showInformationMessage("Hello World from customasm-syntax-highlighting extension!");
 	});
 
+	extractRulesAndSubrules();
 	context.subscriptions.push(disposable2);
 }
 
