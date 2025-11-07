@@ -29,3 +29,4 @@ If the paths are specified in the `package.json` AND in `.customasm.json`, only 
 This extension has some requirements in order to work properly:
 
 - All ruledef's and subruledef's have to be described in exactly a single line of code. Multiple lines per rule will break the semantic syntax highlighting
+- If you change the "ruleDefinitions" or "customasmRuleDefinitions", please restart the extension
