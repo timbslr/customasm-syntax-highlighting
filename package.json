@@ -12,6 +12,10 @@
 	],
 	"activationEvents": [],
 	"main": "./src/extension.js",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/timbslr/customasm-toolbox.git"
+	},
 	"contributes": {
 		"commands": [
 			{
