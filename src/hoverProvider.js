@@ -7,20 +7,18 @@ export const hoverProvider = {
 		if (!wordRange) return;
 
 		const mnemonic = document.getText(wordRange);
-		const operandsLabel = generateOperandsLabelForMnemonic(mnemonic);
-		if (!operandsLabel) return;
-
-		const label = `${mnemonic} ${operandsLabel}`;
+		const label = generateLabelForMnemonic(mnemonic);
+		if (!label) return;
 
 		return new vscode.Hover(label);
 	},
 };
 
-export function generateOperandsLabelForMnemonic(mnemonic) {
-	const operandsString = rules
-		.find((rule) => rule.mnemonic === mnemonic)
-		?.operands.map((operand) => `{${operand.name}: ${operand.type}}`)
-		.join(", ");
-
-	return operandsString;
+export function generateLabelForMnemonic(mnemonic) {
+	let label = "";
+	for (const operands of rules.get(mnemonic)) {
+		const instructionLabel = `${mnemonic} ${operands.map((operand) => (operand.type == null ? operand.name : `{${operand.name}: ${operand.type}}`)).join(", ")}`;
+		label += instructionLabel + "  \n";
+	}
+	return label;
 }

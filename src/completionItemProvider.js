@@ -1,4 +1,4 @@
-import { generateOperandsLabelForMnemonic } from "./hoverProvider.js";
+import { generateLabelForMnemonic } from "./hoverProvider.js";
 import { getMnemonics, getSubruleOperands } from "./rulesProvider.js";
 import * as vscode from "vscode";
 
@@ -16,7 +16,7 @@ export const completionItemProvider = {
 		if (/^\s*[a-zA-Z0-9_]*$/m.test(prefix)) {
 			return getMnemonics().map((mnemonic) => {
 				const item = new vscode.CompletionItem(mnemonic, vscode.CompletionItemKind.Field);
-				item.detail = mnemonic + " " + generateOperandsLabelForMnemonic(mnemonic);
+				item.detail = mnemonic + " " + generateLabelForMnemonic(mnemonic);
 				return item;
 			});
 		}

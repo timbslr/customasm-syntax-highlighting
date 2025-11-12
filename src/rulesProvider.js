@@ -2,12 +2,15 @@ import { readFileSync } from "fs";
 import { getRuledefPaths } from "./ruledefPathProvider.js";
 import assert from "assert";
 
-export let rules = [];
+/**
+ * @type {Map<string, {name: string, type:string}[][]>}
+ */
+export let rules = new Map();
 export let subrules = [];
 
 export function getMnemonics() {
 	updateRules();
-	return rules.map((rule) => rule.mnemonic);
+	return [...rules.keys()];
 }
 
 /**
@@ -23,7 +26,7 @@ export function getSubruleOperands() {
  * @returns {void}
  */
 export function updateRules() {
-	const newRules = [];
+	const newRules = new Map();
 	const newSubrules = [];
 
 	const ruledefPaths = getRuledefPaths();
@@ -31,8 +34,15 @@ export function updateRules() {
 		const content = removeComments(readFileSync(ruledefPath).toString());
 
 		const ruledefStrings = extractRulesFromString(content);
-		ruledefStrings.forEach((rule) => {
-			newRules.push(parseRuleString(rule));
+		ruledefStrings.forEach((ruleString) => {
+			const rule = parseRuleString(ruleString);
+			if (newRules.has(rule.mnemonic)) {
+				let value = newRules.get(rule.mnemonic) || [];
+				value.push(rule.operands);
+				newRules.set(rule.mnemonic, value);
+			} else {
+				newRules.set(rule.mnemonic, [rule.operands]);
+			}
 		});
 
 		const subruledefObjects = extractSubrulesFromString(content);
@@ -118,6 +128,8 @@ function parseRuleString(rule) {
 			const name = match[1];
 			const type = match[2];
 			operandObjects.push({ name: name, type: type });
+		} else {
+			operandObjects.push({ name: operandString, type: null });
 		}
 	});
 
