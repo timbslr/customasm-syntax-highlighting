@@ -19,7 +19,7 @@ export const completionItemProvider = {
 		if (/^\s*[a-zA-Z0-9_]*$/m.test(prefix)) {
 			return getMnemonics().map((mnemonic) => {
 				const item = new vscode.CompletionItem(mnemonic, vscode.CompletionItemKind.Field);
-				item.detail = mnemonic + " " + generateLabelForMnemonic(mnemonic);
+				item.detail = generateLabelForMnemonic(mnemonic);
 				return item;
 			});
 		}
@@ -28,22 +28,38 @@ export const completionItemProvider = {
 	},
 };
 
+/**
+ *
+ * @param {{name: string, type: string}[][]} possibleOperands
+ * @param {string[]} currentOperands
+ * @returns {vscode.CompletionItem[]}
+ */
 function getCompletionItems(possibleOperands, currentOperands) {
-	const lastIndexOfCurrentOperands = currentOperands.length() - 1;
-	if (lastIndexOfCurrentOperands == -1) {
-		return null;
+	if (currentOperands.length > 0) {
+		currentOperands.pop();
 	}
-
-	const currentOperand = currentOperands.pop();
 	const completionItems = [];
+	const completionStrings = new Set();
 	possibleOperands.forEach((operands) => {
-		if (areOperandsMatchingRule(operands, currentOperands)) {
-			//TODO
+		if (areOperandsMatchingRule(currentOperands, operands)) {
+			const amountOfOperandsAlreadyChecked = currentOperands.length;
+			if (operands.length > amountOfOperandsAlreadyChecked) {
+				const operandType = operands[amountOfOperandsAlreadyChecked].type;
+				if (operandType) {
+					subrules.get(operandType)?.forEach((operand) => {
+						completionStrings.add(operand);
+					});
+				} else {
+					completionStrings.add(operands[amountOfOperandsAlreadyChecked].name);
+				}
+			}
 		}
 	});
+	completionStrings.forEach((completionString) => {
+		completionItems.push(new vscode.CompletionItem(completionString, vscode.CompletionItemKind.Operator));
+	});
 
-	//return new vscode.CompletionItem(operand, vscode.CompletionItemKind.Operator);
-	return null; //TODO
+	return completionItems;
 }
 
 /**
@@ -55,6 +71,9 @@ export function areOperandsMatchingRule(operands, ruleOperands) {
 	for (let i = 0; i < operands.length; i++) {
 		const operandInstance = operands[i];
 		const operandType = ruleOperands[i].type;
+		if (!operandType && operandInstance !== ruleOperands[i].name) {
+			return false;
+		}
 		if (!isOperandInstanceMatchingType(operandInstance, operandType)) {
 			return false;
 		}

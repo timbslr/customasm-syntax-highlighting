@@ -17,7 +17,7 @@ export const hoverProvider = {
 export function generateLabelForMnemonic(mnemonic) {
 	let label = "";
 	for (const operands of rules.get(mnemonic)) {
-		const instructionLabel = `${mnemonic} ${operands.map((operand) => (operand.type == null ? operand.name : `{${operand.name}: ${operand.type}}`)).join(", ")}`;
+		const instructionLabel = `${mnemonic} ${operands.map((operand) => (operand.type === null ? operand.name : `{${operand.name}: ${operand.type}}`)).join(", ")}`;
 		label += instructionLabel + "  \n";
 	}
 	return label;
