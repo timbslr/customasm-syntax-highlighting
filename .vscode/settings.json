@@ -1,3 +1,10 @@
 {
-	"cSpell.words": ["customasm", "ruledef", "Ruledef", "ruledefs", "subruledef"]
+	"cSpell.words": ["addi", "customasm", "ruledef", "Ruledef", "ruledefs", "subruledef"],
+	"files.exclude": {
+		"out": false
+	},
+	"search.exclude": {
+		"out": true
+	},
+	"typescript.tsc.autoDetect": "off" // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
 }

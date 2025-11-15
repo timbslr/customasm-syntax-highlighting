@@ -2,11 +2,11 @@ import * as vscode from "vscode";
 
 /**
  *
- * @param {RegExp} regExp The regular expression that the input should me matched against
- * @param {vscode.TextDocument} document The document that should be checked
- * @returns {vscode.Range[]} The ranges in the document that matched the regular expression
+ * @param regExp The regular expression that the input should me matched against
+ * @param  document The document that should be checked
+ * @returns The ranges in the document that matched the regular expression
  */
-export function matchRegex(regExp, document) {
+export function matchRegex(regExp: RegExp, document: vscode.TextDocument): vscode.Range[] {
 	const documentText = document.getText();
 	const matchingRanges = [];
 	let match;

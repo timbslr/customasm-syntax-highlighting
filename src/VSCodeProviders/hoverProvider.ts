@@ -1,8 +1,8 @@
 import * as vscode from "vscode";
-import { rules } from "./rulesProvider.js";
+import CustomAsm from "../CustomAsm";
 
 export const hoverProvider = {
-	provideHover(document, position, token) {
+	provideHover(document: vscode.TextDocument, position: vscode.Position) {
 		const wordRange = document.getWordRangeAtPosition(position, /\w+/);
 		if (!wordRange) return;
 
@@ -14,9 +14,14 @@ export const hoverProvider = {
 	},
 };
 
-export function generateLabelForMnemonic(mnemonic) {
+export function generateLabelForMnemonic(mnemonic: string): string | null {
 	let label = "";
-	for (const operands of rules.get(mnemonic)) {
+	const operandsForMnemonic = CustomAsm.rules.get(mnemonic);
+	if (!operandsForMnemonic) {
+		return null;
+	}
+
+	for (const operands of operandsForMnemonic) {
 		const instructionLabel = `${mnemonic} ${operands.map((operand) => (operand.type === null ? operand.name : `{${operand.name}: ${operand.type}}`)).join(", ")}`;
 		label += instructionLabel + "  \n";
 	}

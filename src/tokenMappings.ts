@@ -16,6 +16,6 @@ const tokenMapping = [
  * @param {string} tokenKind The kind of token that should be found, e.g. mnemonic
  * @returns {{tokenKind: string, mappedTokenType: string, mappedTokenModifiers: string[]}}
  */
-export default function getTokenMapping(tokenKind) {
+export function getTokenMapping(tokenKind: string): { tokenKind: string; mappedTokenType: string; mappedTokenModifiers: string[] } | undefined {
 	return tokenMapping.find((tokenObject) => tokenObject.tokenKind === tokenKind);
 }
